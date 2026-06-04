@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  portfolium:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://portfolium:portfolium2026@postgres-program-multi-byte-sensor-hqsb26:5432/portfolium
+      - NEXTAUTH_SECRET=supersecretkey2026
+      - NEXTAUTH_URL=https://portfolium.wolrac.com
+      - NODE_ENV=production
+    depends_on:
+      - db
+    networks:
+      - dokploy-network
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=portfolium
+      - POSTGRES_USER=portfolium
+      - POSTGRES_PASSWORD=portfolium2026
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - dokploy-network
+
+volumes:
+  pgdata:
+
+networks:
+  dokploy-network:
+    external: true
